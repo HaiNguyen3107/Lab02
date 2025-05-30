@@ -37,7 +37,7 @@ function TopBar() {
     <AppBar position="absolute">
       <Toolbar>
         <Typography variant="h5" color="inherit" sx={{ flexGrow: 1 }}>
-          Hai Nguyen
+          Nguyen Minh Duc Hai
         </Typography>
         <Box>
           {loading ? (

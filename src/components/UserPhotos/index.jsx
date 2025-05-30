@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Card, CardContent, Grid } from "@mui/material";
-import { useParams } from "react-router-dom";
-import models from "../../modelData/models";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Typography, Card, CardContent, CardMedia } from "@mui/material";
+import { useParams, Link } from "react-router-dom";
+
+import "./styles.css";
+import fetchModel from "../../lib/fetchModelData";
 
 function UserPhotos() {
   const { userId } = useParams();
@@ -10,89 +11,61 @@ function UserPhotos() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const fetchedPhotos = await models.photoOfUserModel(userId);
-        if (!fetchedPhotos) {
-          setError("Failed to fetch user data.");
-          return;
-        }
-        setPhotos(fetchedPhotos);
-      } catch (err) {
-        setError("An error occurred while fetching data.");
-        console.error(err);
-      }
-    };
-    fetchData();
+    fetchModel(`/photosOfUser/${userId}`)
+      .then((photoData) => {
+        setPhotos(photoData);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
   }, [userId]);
 
   if (error) {
-    return (
-      <Typography variant="h6" color="error">
-        {error}
-      </Typography>
-    );
+    return <Typography variant="h6">Error: {error}</Typography>;
   }
 
   if (!photos || photos.length === 0) {
-    return (
-      <Typography variant="h6">No photos available for this user.</Typography>
-    );
+    return <Typography variant="h6">No photos found for this user.</Typography>;
   }
 
   return (
     <div>
-      <Grid container spacing={2}>
-        {photos.map((photo) => (
-          <Grid item xs={12} sm={6} md={4} key={photo._id}>
-            <Card>
-              <CardContent>
-                <img
-                  src={require(`../../images/${photo.file_name}`)}
-                  alt={`${photo.user_id}`}
-                  style={{
-                    width: "80%",
-                    height: "auto",
-                    margin: "0 auto",
-                    display: "block",
-                  }}
-                />
-                <Typography variant="body2" color="textSecondary">
-                  <strong>Created on:</strong>{" "}
-                  {new Date(photo.date_time).toLocaleString()}
-                </Typography>
-                {photo.comments && photo.comments.length > 0 ? (
-                  <div>
-                    <Typography variant="body2" color="textSecondary">
-                      <strong>Comments:</strong>
-                    </Typography>
-                    {photo.comments.map((comment) => (
-                      <div key={comment._id}>
-                        <Typography variant="body2">
-                          <Link to={`/users/${comment.user._id}`}>
-                            <strong>
-                              {comment.user.first_name} {comment.user.last_name}
-                              :
-                            </strong>
-                          </Link>{" "}
-                          {comment.comment}
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          {new Date(comment.date_time).toLocaleString()}
-                        </Typography>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <Typography variant="body2" color="textSecondary">
-                    No comment
+      {photos.map((photo) => (
+        <Card key={photo._id} className="photo-card">
+          <CardMedia
+            component="img"
+            image={require(`../../images/${photo.file_name}`)}
+            alt="User Photo"
+            className="photo-img"
+          />
+          <CardContent>
+            <Typography className="photo-date">
+              Date: {new Date(photo.date_time).toLocaleString()}
+            </Typography>
+
+            {photo.comments && photo.comments.length > 0 ? (
+              photo.comments.map((comment) => (
+                <div key={comment._id} style={{ marginTop: "10px" }}>
+                  <Typography className="photo-comment-time">
+                    {new Date(comment.date_time).toLocaleString()}
                   </Typography>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  <Typography className="photo-comment">
+                    <Link
+                      to={`/users/${comment.user._id}`}
+                      style={{ color: "#4dabf7", textDecoration: "none" }}
+                    >
+                      {comment.user.first_name} {comment.user.last_name}
+                    </Link>
+                    : {comment.comment}
+                  </Typography>
+                </div>
+              ))
+            ) : (
+              <Typography className="photo-no-comment">No comments.</Typography>
+            )}
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

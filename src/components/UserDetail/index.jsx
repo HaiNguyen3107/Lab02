@@ -1,38 +1,55 @@
-import React from "react";
-import { Typography, Card, CardContent, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Typography, Button } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
+import fetchModel from "../../lib/fetchModelData";
 
 import "./styles.css";
-import models from "../../modelData/models";
 
+/**
+ * Define UserDetail, a React component of Project 4.
+ */
 function UserDetail() {
   const { userId } = useParams();
-  const user = models.userModel(userId);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchModel(`/user/${userId}`)
+      .then((userData) => {
+        setUser(userData);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  }, [userId]);
+
+  if (error) {
+    return <Typography variant="h6">Error: {error}</Typography>;
+  }
 
   if (!user) {
-    return <Typography variant="h6">User not found.</Typography>;
+    return <Typography variant="h6">Loading...</Typography>;
   }
 
   return (
-    <Card className="user-detail-card">
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          {user.first_name} {user.last_name}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Location:</strong> {user.location}
-        </Typography>
-        <Typography variant="body1">
-          <strong>Occupation:</strong> {user.occupation}
-        </Typography>
-        <Typography variant="body1" paragraph>
-          <strong>Description:</strong> {user.description}
-        </Typography>
-        <Button variant="contained" component={Link} to={`/photos/${user._id}`}>
-          View photos of {user.first_name} {user.last_name}
-        </Button>
-      </CardContent>
-    </Card>
+    <div>
+      <Typography variant="h5">
+        {user.first_name} {user.last_name}
+      </Typography>
+
+      <Typography variant="body1">Location: {user.location}</Typography>
+      <Typography variant="body1">Description: {user.description}</Typography>
+      <Typography variant="body1">Occupation: {user.occupation}</Typography>
+
+      <Button
+        variant="contained"
+        component={Link}
+        to={`/photos/${userId}`}
+        sx={{ mt: 2 }}
+      >
+        View Photos
+      </Button>
+    </div>
   );
 }
 
