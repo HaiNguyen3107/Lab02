@@ -6,20 +6,23 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-
 import { Link } from "react-router-dom";
 import "./styles.css";
-import fetchModel from "../../lib/fetchModelData";
 
-/**
- * Define UserList, a React component of Project 4.
- */
 function UserList() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchModel("/user/list")
+    fetch("https://lkgky6-8081.csb.app/api/user/list", {
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Failed to fetch users");
+      })
       .then((userData) => {
         setUsers(userData);
       })

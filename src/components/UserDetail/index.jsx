@@ -1,26 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData";
 
 import "./styles.css";
 
-/**
- * Define UserDetail, a React component of Project 4.
- */
 function UserDetail() {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchModel(`/user/${userId}`)
-      .then((userData) => {
-        setUser(userData);
+    if (userId) {
+      fetch(`https://lkgky6-8081.csb.app/api/user/${userId}`, {
+        credentials: "include",
       })
-      .catch((err) => {
-        setError(err.message);
-      });
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Failed to fetch user");
+        })
+        .then((userData) => {
+          setUser(userData);
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    }
   }, [userId]);
 
   if (error) {

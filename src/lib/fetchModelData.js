@@ -12,7 +12,7 @@ function fetchModel(url) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    mode: "cors",
+    credentials: "include",
   })
     .then((response) => {
       if (!response.ok) {
