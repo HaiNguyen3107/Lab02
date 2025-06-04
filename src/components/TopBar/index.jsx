@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Button, Input } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
 
 import "./styles.css";
 
