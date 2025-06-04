@@ -5,11 +5,8 @@ import { useLocation, useParams } from "react-router-dom";
 import "./styles.css";
 
 function TopBar({ currentUser, onLogout }) {
-  const location = useLocation();
-  const { userId } = useParams();
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -35,7 +32,7 @@ function TopBar({ currentUser, onLogout }) {
       if (response.ok) {
         alert("Photo uploaded successfully!");
         setSelectedFile(null);
-     
+
         document.getElementById("photo-upload-input").value = "";
         window.location.reload();
       } else {
@@ -95,8 +92,6 @@ function TopBar({ currentUser, onLogout }) {
             </>
           )}
         </div>
-
-       
       </Toolbar>
     </AppBar>
   );
