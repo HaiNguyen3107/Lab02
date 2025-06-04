@@ -11,7 +11,7 @@ function UserDetail() {
 
   useEffect(() => {
     if (userId) {
-      fetch(`https://lkgky6-8081.csb.app/api/user/${userId}`, {
+      fetch(`https://wld3q8-8081.csb.app/api/user/${userId}`, {
         credentials: "include",
       })
         .then((response) => {

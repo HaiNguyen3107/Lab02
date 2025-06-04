@@ -40,7 +40,7 @@ function LoginRegister({ onLogin }) {
     setError("");
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/admin/login", {
+      const response = await fetch("https://wld3q8-8081.csb.app/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function LoginRegister({ onLogin }) {
     }
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/api/user", {
+      const response = await fetch("https://wld3q8-8081.csb.app/api/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

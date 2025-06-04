@@ -35,7 +35,7 @@ function TopBar({ currentUser, onLogout }) {
     formData.append("uploadedphoto", selectedFile);
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/photos/new", {
+      const response = await fetch("https://wld3q8-8081.csb.app/photos/new", {
         method: "POST",
         body: formData,
         credentials: "include",

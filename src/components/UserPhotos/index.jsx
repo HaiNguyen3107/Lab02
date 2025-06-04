@@ -36,7 +36,7 @@ function UserPhotos({ currentUser }) {
   const [newComments, setNewComments] = useState({});
 
   useEffect(() => {
-    fetch(`https://lkgky6-8081.csb.app/api/photo/user/${userId}`, {
+    fetch(`https://wld3q8-8081.csb.app/api/photo/user/${userId}`, {
       credentials: "include",
     })
       .then((response) => {
@@ -72,7 +72,7 @@ function UserPhotos({ currentUser }) {
 
     try {
       const response = await fetch(
-        `https://lkgky6-8081.csb.app/commentsOfPhoto/${photoId}`,
+        `https://wld3q8-8081.csb.app/commentsOfPhoto/${photoId}`,
         {
           method: "POST",
           headers: {
@@ -117,7 +117,7 @@ function UserPhotos({ currentUser }) {
         <Card key={photo._id} className="photo-card" sx={{ mb: 2 }}>
           <CardMedia
             component="img"
-            image={`https://lkgky6-8081.csb.app/images/${photo.file_name}`}
+            image={`https://wld3q8-8081.csb.app/images/${photo.file_name}`}
             alt={`Photo by user ${userId}`}
             className="photo-img"
             sx={{

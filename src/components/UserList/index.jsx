@@ -14,7 +14,7 @@ function UserList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("https://lkgky6-8081.csb.app/api/user/list", {
+    fetch("https://wld3q8-8081.csb.app/api/user/list", {
       credentials: "include",
     })
       .then((response) => {
