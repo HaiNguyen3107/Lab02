@@ -10,15 +10,6 @@ function TopBar({ currentUser, onLogout }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  let rightContent = "Photo Sharing App";
-
-  if (location.pathname.startsWith("/users/") && userId) {
-    rightContent = "User Details";
-  }
-
-  if (location.pathname.startsWith("/photos/") && userId) {
-    rightContent = "User Photos";
-  }
 
   const handleFileSelect = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -35,7 +26,7 @@ function TopBar({ currentUser, onLogout }) {
     formData.append("uploadedphoto", selectedFile);
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/photos/new", {
+      const response = await fetch("https://wld3q8-8081.csb.app/photos/new", {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -44,9 +35,8 @@ function TopBar({ currentUser, onLogout }) {
       if (response.ok) {
         alert("Photo uploaded successfully!");
         setSelectedFile(null);
-        // Reset file input
+     
         document.getElementById("photo-upload-input").value = "";
-        // Reload page để hiển thị ảnh mới
         window.location.reload();
       } else {
         const error = await response.json();
@@ -78,7 +68,7 @@ function TopBar({ currentUser, onLogout }) {
               />
               <label htmlFor="photo-upload-input">
                 <Button variant="contained" component="span" size="small">
-                  Choose Photo
+                  Add Photo
                 </Button>
               </label>
 
@@ -106,9 +96,7 @@ function TopBar({ currentUser, onLogout }) {
           )}
         </div>
 
-        <Typography variant="h6" color="inherit">
-          {rightContent}
-        </Typography>
+       
       </Toolbar>
     </AppBar>
   );

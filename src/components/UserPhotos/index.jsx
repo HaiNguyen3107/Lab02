@@ -12,19 +12,19 @@ import { useParams, Link } from "react-router-dom";
 
 import "./styles.css";
 
-// Hàm tiện ích để định dạng ngày giờ theo "HH:mm:ss DD/MM/YYYY" SỬ DỤNG GIỜ UTC
-function formatDateTimeUTC(dateString) {
+
+function formatDateTime(dateString) {
   if (!dateString) return "";
   const date = new Date(dateString);
 
-  // Sử dụng các phương thức getUTC... để lấy thông tin theo giờ UTC
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  const seconds = String(date.getUTCSeconds()).padStart(2, "0");
 
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Tháng trong JavaScript bắt đầu từ 0
-  const year = date.getUTCFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); 
+  const year = date.getFullYear();
 
   return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
 }
@@ -36,7 +36,7 @@ function UserPhotos({ currentUser }) {
   const [newComments, setNewComments] = useState({});
 
   useEffect(() => {
-    fetch(`https://lkgky6-8081.csb.app/api/photo/user/${userId}`, {
+    fetch(`https://wld3q8-8081.csb.app/photosOfUser/${userId}`, {
       credentials: "include",
     })
       .then((response) => {
@@ -72,7 +72,7 @@ function UserPhotos({ currentUser }) {
 
     try {
       const response = await fetch(
-        `https://lkgky6-8081.csb.app/commentsOfPhoto/${photoId}`,
+        `https://wld3q8-8081.csb.app/commentsOfPhoto/${photoId}`,
         {
           method: "POST",
           headers: {
@@ -117,7 +117,7 @@ function UserPhotos({ currentUser }) {
         <Card key={photo._id} className="photo-card" sx={{ mb: 2 }}>
           <CardMedia
             component="img"
-            image={`https://lkgky6-8081.csb.app/images/${photo.file_name}`}
+            image={`https://wld3q8-8081.csb.app/images/${photo.file_name}`}
             alt={`Photo by user ${userId}`}
             className="photo-img"
             sx={{
@@ -135,8 +135,8 @@ function UserPhotos({ currentUser }) {
               variant="caption"
               color="text.secondary"
             >
-              {/* SỬ DỤNG HÀM ĐỊNH DẠNG UTC MỚI */}
-              Created on: {formatDateTimeUTC(photo.date_time)}
+
+              Created on: {formatDateTime(photo.date_time)}
             </Typography>
 
             <Typography variant="h6" component="div" sx={{ mt: 1, mb: 1 }}>
@@ -149,8 +149,8 @@ function UserPhotos({ currentUser }) {
                   sx={{ mt: 1, p: 1, bgcolor: "#f5f5f5", borderRadius: 1 }}
                 >
                   <Typography variant="caption" color="text.secondary">
-                    {/* SỬ DỤNG HÀM ĐỊNH DẠNG UTC MỚI */}
-                    {formatDateTimeUTC(comment.date_time)}
+
+                    {formatDateTime(comment.date_time)}
                   </Typography>
                   <Typography variant="body2">
                     <Link

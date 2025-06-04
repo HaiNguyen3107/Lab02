@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 function LoginRegister({ onLogin }) {
-  const [isLogin, setIsLogin] = useState(true); // true = login, false = register
+  const [isLogin, setIsLogin] = useState(true); 
 
   // Login state
   const [loginData, setLoginData] = useState({
@@ -40,7 +40,7 @@ function LoginRegister({ onLogin }) {
     setError("");
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/admin/login", {
+      const response = await fetch("https://wld3q8-8081.csb.app/admin/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function LoginRegister({ onLogin }) {
     }
 
     try {
-      const response = await fetch("https://lkgky6-8081.csb.app/api/user", {
+      const response = await fetch("https://wld3q8-8081.csb.app/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -106,7 +106,7 @@ function LoginRegister({ onLogin }) {
           description: "",
           occupation: "",
         });
-        setIsLogin(true); // Chuyển về form login
+        setIsLogin(true); 
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Registration failed");

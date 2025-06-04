@@ -13,9 +13,8 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Kiểm tra trạng thái đăng nhập khi app khởi động
+
   useEffect(() => {
-    // Kiểm tra session từ localStorage hoặc gọi API để verify session
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
       setCurrentUser(JSON.parse(savedUser));
@@ -27,12 +26,11 @@ const App = () => {
     setCurrentUser(user);
     localStorage.setItem("currentUser", JSON.stringify(user));
   };
-
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem("currentUser");
     // Gọi API logout
-    fetch("https://lkgky6-8081.csb.app/admin/logout", {
+    fetch("https://wld3q8-8081.csb.app/admin/logout", {
       method: "POST",
       credentials: "include",
     });
@@ -52,14 +50,12 @@ const App = () => {
           <div className="main-topbar-buffer" />
 
           {!currentUser ? (
-            // Nếu chưa đăng nhập, hiển thị màn hình login
             <Grid item xs={12}>
               <Paper className="main-grid-item">
                 <LoginRegister onLogin={handleLogin} />
               </Paper>
             </Grid>
           ) : (
-            // Nếu đã đăng nhập, hiển thị app bình thường
             <>
               <Grid item sm={3}>
                 <Paper className="main-grid-item">
