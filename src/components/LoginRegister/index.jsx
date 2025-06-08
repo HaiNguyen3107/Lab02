@@ -6,11 +6,10 @@ import {
   Button,
   Typography,
   Box,
-  Alert,
 } from "@mui/material";
 
 function LoginRegister({ onLogin }) {
-  const [isLogin, setIsLogin] = useState(true); 
+  const [isLogin, setIsLogin] = useState(true);
 
   // Login state
   const [loginData, setLoginData] = useState({
@@ -31,7 +30,6 @@ function LoginRegister({ onLogin }) {
   });
 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
@@ -67,7 +65,6 @@ function LoginRegister({ onLogin }) {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    setSuccess("");
 
     // Kiểm tra password khớp
     if (registerData.password !== registerData.confirmPassword) {
@@ -95,7 +92,6 @@ function LoginRegister({ onLogin }) {
       });
 
       if (response.ok) {
-        setSuccess("Registration successful! You can now login.");
         setRegisterData({
           login_name: "",
           password: "",
@@ -106,7 +102,7 @@ function LoginRegister({ onLogin }) {
           description: "",
           occupation: "",
         });
-        setIsLogin(true); 
+        setIsLogin(true);
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Registration failed");
@@ -125,17 +121,6 @@ function LoginRegister({ onLogin }) {
           <Typography variant="h4" textAlign="center" gutterBottom>
             {isLogin ? "Login" : "Register"}
           </Typography>
-
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          {success && (
-            <Alert severity="success" sx={{ mb: 2 }}>
-              {success}
-            </Alert>
-          )}
 
           {isLogin ? (
             // Form Login
@@ -292,7 +277,6 @@ function LoginRegister({ onLogin }) {
             onClick={() => {
               setIsLogin(!isLogin);
               setError("");
-              setSuccess("");
             }}
           >
             {isLogin

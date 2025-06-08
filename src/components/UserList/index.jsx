@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Divider,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
@@ -12,23 +12,22 @@ import "./styles.css";
 function UserList() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
-
   useEffect(() => {
-    fetch("https://wld3q8-8081.csb.app/user/list", {
-      credentials: "include",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://wld3q8-8081.csb.app/user/list", {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch users");
         }
-        throw new Error("Failed to fetch users");
-      })
-      .then((userData) => {
-        setUsers(userData);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+        const result = await response.json();
+        setUsers(result);
+      } catch (error) {
+        setError("An error occurred while fetching the data.");
+      }
+    };
+    fetchData();
   }, []);
 
   if (error) {
@@ -36,12 +35,11 @@ function UserList() {
   }
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <Typography
         variant="h6"
         sx={{
           mb: 2,
-          color: "white",
           fontWeight: "bold",
           textAlign: "center",
         }}
@@ -52,12 +50,12 @@ function UserList() {
       <List component="nav">
         {users.map((item) => (
           <React.Fragment key={item._id}>
-            <ListItem button component={Link} to={`/users/${item._id}`}>
+            <ListItemButton component={Link} to={`/users/${item._id}`}>
               <ListItemText
                 primary={item.first_name + " " + item.last_name}
                 primaryTypographyProps={{ fontWeight: "bold" }}
               />
-            </ListItem>
+            </ListItemButton>
             <Divider sx={{ bgcolor: "#444" }} />
           </React.Fragment>
         ))}

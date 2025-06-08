@@ -44,7 +44,46 @@
  *   __v (number)           - The version number.
  *   load_date_time (date)  - The date the schema was made in ISO format.
  */
+// App.js
+// const handleUserUpdated = (updatedUser) => {
+//   setCurrentUser(updatedUser);
+//   localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+//   setUserListTrigger((prev) => prev + 1);
+// };
+// function UserDetail({ currentUser, onUserUpdated })
+//  const handleEditSubmit = async (e) => {
+//   e.preventDefault();
+//   setUpdateMessage("");
+//   setUpdateError("");
+//   try {
+//     const response = await fetch(`http://localhost:8081/user/${userId}`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       credentials: "include",
+//       body: JSON.stringify(editData),
+//     });
 
+//     if (!response.ok) {
+//       throw new Error("Failed to update user information");
+//     }
+
+//     const updatedUser = await response.json();
+//     setUser(updatedUser);
+//     setUpdateMessage("Update successfully");
+//     setIsEditing(false);
+
+//     // Update localStorage if this is current user
+//     if (currentUser && currentUser._id === userId) {
+//       const updatedCurrentUser = { ...currentUser, ...updatedUser };
+//       onUserUpdated(updatedCurrentUser);
+//     }
+//   } catch (error) {
+//     setUpdateError(error.message);
+//   }
+// };
+// const canEdit = currentUser && userId && currentUser._id === userId;
 const schemaInfo = {
   load_date_time: "Fri Apr 29 2016 01:45:15 GMT-0700 (PDT)",
   __v: 0,
@@ -274,8 +313,7 @@ const comment7 = {
 const comment8 = {
   _id: "57231f1a30e4351f4e9f4bf0",
   date_time: "2010-09-06 13:59:33",
-  comment:
-    "Made a new friend today! Well, they followed me " + "home, anyway.",
+  comment: "Made a new friend today! Well, they followed me " + "home, anyway.",
   user: rk,
   photo_id: photo8._id,
 };

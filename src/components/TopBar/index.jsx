@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button, Input } from "@mui/material";
 
 import "./styles.css";
 
-function TopBar({ currentUser, onLogout }) {
+function TopBar({ currentUser, onLogout, onPhotoUploaded }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -33,7 +33,9 @@ function TopBar({ currentUser, onLogout }) {
         setSelectedFile(null);
 
         document.getElementById("photo-upload-input").value = "";
-        window.location.reload();
+        if (onPhotoUploaded) {
+          onPhotoUploaded();
+        }
       } else {
         const error = await response.json();
         alert(`Upload failed: ${error.error}`);

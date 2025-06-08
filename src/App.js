@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import TopBar from "./components/TopBar";
@@ -9,11 +9,10 @@ import UserList from "./components/UserList";
 import UserPhotos from "./components/UserPhotos";
 import LoginRegister from "./components/LoginRegister";
 
-const App = () => {
+function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
-
+  const [photoUploadTrigger, setPhotoUploadTrigger] = useState(0);
   useEffect(() => {
     const savedUser = localStorage.getItem("currentUser");
     if (savedUser) {
@@ -35,6 +34,10 @@ const App = () => {
       credentials: "include",
     });
   };
+  const handlePhotoUploaded = () => {
+    // Tăng giá trị của trigger để kích hoạt useEffect trong UserPhotos
+    setPhotoUploadTrigger((prev) => prev + 1);
+  };
 
   if (isLoading) {
     return <Typography>Loading...</Typography>;
@@ -45,35 +48,38 @@ const App = () => {
       <div>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TopBar currentUser={currentUser} onLogout={handleLogout} />
+            <TopBar
+              currentUser={currentUser}
+              onLogout={handleLogout}
+              onPhotoUploaded={handlePhotoUploaded}
+            />
           </Grid>
           <div className="main-topbar-buffer" />
 
           {!currentUser ? (
             <Grid item xs={12}>
-              <Paper className="main-grid-item">
-                <LoginRegister onLogin={handleLogin} />
-              </Paper>
+              <LoginRegister onLogin={handleLogin} />
             </Grid>
           ) : (
             <>
               <Grid item sm={3}>
-                <Paper className="main-grid-item">
-                  <UserList />
-                </Paper>
+                <UserList />
               </Grid>
               <Grid item sm={9}>
-                <Paper className="main-grid-item">
-                  <Routes>
-                    <Route path="/users/:userId" element={<UserDetail />} />
-                    <Route
-                      path="/photos/:userId"
-                      element={<UserPhotos currentUser={currentUser} />}
-                    />
-                    <Route path="/users" element={<UserDetail />} />
-                    <Route path="/" element={<UserDetail />} />
-                  </Routes>
-                </Paper>
+                <Routes>
+                  <Route path="/users/:userId" element={<UserDetail />} />
+                  <Route
+                    path="/photos/:userId"
+                    element={
+                      <UserPhotos
+                        currentUser={currentUser}
+                        uploadTrigger={photoUploadTrigger}
+                      />
+                    }
+                  />
+                  <Route path="/users" element={<UserDetail />} />
+                  <Route path="/" element={<UserDetail />} />
+                </Routes>
               </Grid>
             </>
           )}
@@ -81,6 +87,6 @@ const App = () => {
       </div>
     </Router>
   );
-};
+}
 
 export default App;

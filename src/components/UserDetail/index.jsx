@@ -5,27 +5,30 @@ import { useParams, Link } from "react-router-dom";
 import "./styles.css";
 
 function UserDetail() {
+  const canEdit = currentUser && userId && currentUser._id === userId;
   const { userId } = useParams();
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-
   useEffect(() => {
-    if (userId) {
-      fetch(`https://wld3q8-8081.csb.app/user/${userId}`, {
-        credentials: "include",
-      })
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://wld3q8-8081.csb.app/user/${userId}`,
+          {
+            credentials: "include",
           }
-          throw new Error("Failed to fetch user");
-        })
-        .then((userData) => {
-          setUser(userData);
-        })
-        .catch((err) => {
-          setError(err.message);
-        });
+        );
+        if (!response.ok) {
+          throw new Error("Failed to get data");
+        }
+        const result = await response.json();
+        setUser(result);
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+    if (userId) {
+      fetchData();
     }
   }, [userId]);
 
@@ -38,7 +41,7 @@ function UserDetail() {
   }
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <Typography variant="h5">
         {user.first_name} {user.last_name}
       </Typography>
